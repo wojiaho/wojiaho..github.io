@@ -3,18 +3,25 @@
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="utf-8">
   
-  <title>Wojiaho</title>
+  <title>深拷贝和浅拷贝 | Wojiaho</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Wojiaho的个人blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Wojiaho">
-<meta property="og:url" content="https://wojiaho.github.io/index.html">
+  <meta name="description" content="深拷贝和浅拷贝区别：是否是真正的拷贝了一个对象的实体，而不是引用 对象中的属性，如果是引用类型(对象和数组)，浅拷贝只会引用此属性的地址，如果修改此属性中的值，拷贝的对象也会修改 深拷贝则是真正的复制了这样一个对象，在内存中重新开辟一块内存空间存储，所以需要递归实现 浅复制 —-只是拷贝了基本类型的数据，而引用类型数据，复制后也是会发生引用，我们把这种拷贝叫做“（浅复制）浅拷贝”，换句话说，浅复制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深拷贝和浅拷贝">
+<meta property="og:url" content="https://wojiaho.github.io/2019/04/25/深拷贝和浅拷贝/index.html">
 <meta property="og:site_name" content="Wojiaho">
-<meta property="og:description" content="Wojiaho的个人blog">
+<meta property="og:description" content="深拷贝和浅拷贝区别：是否是真正的拷贝了一个对象的实体，而不是引用 对象中的属性，如果是引用类型(对象和数组)，浅拷贝只会引用此属性的地址，如果修改此属性中的值，拷贝的对象也会修改 深拷贝则是真正的复制了这样一个对象，在内存中重新开辟一块内存空间存储，所以需要递归实现 浅复制 —-只是拷贝了基本类型的数据，而引用类型数据，复制后也是会发生引用，我们把这种拷贝叫做“（浅复制）浅拷贝”，换句话说，浅复制">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/15636557-9dda8bf8b6e048ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/15636557-c801df5cc5df3510.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/448/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/15636557-82badba61387abe2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/707/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/15636557-82badba61387abe2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/707/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/15636557-2dd573539f0ddb6c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/683/format/webp">
+<meta property="og:updated_time" content="2019-04-25T01:54:25.843Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Wojiaho">
-<meta name="twitter:description" content="Wojiaho的个人blog">
+<meta name="twitter:title" content="深拷贝和浅拷贝">
+<meta name="twitter:description" content="深拷贝和浅拷贝区别：是否是真正的拷贝了一个对象的实体，而不是引用 对象中的属性，如果是引用类型(对象和数组)，浅拷贝只会引用此属性的地址，如果修改此属性中的值，拷贝的对象也会修改 深拷贝则是真正的复制了这样一个对象，在内存中重新开辟一块内存空间存储，所以需要递归实现 浅复制 —-只是拷贝了基本类型的数据，而引用类型数据，复制后也是会发生引用，我们把这种拷贝叫做“（浅复制）浅拷贝”，换句话说，浅复制">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/15636557-9dda8bf8b6e048ac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
   
   
     <link rel="shortcut icon" href="https://upload-images.jianshu.io/upload_images/15636557-b23c6f4de4bc02de.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
@@ -56,9 +63,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-深拷贝和浅拷贝" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-深拷贝和浅拷贝" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/04/25/深拷贝和浅拷贝/" class="article-date">
   <time datetime="2019-04-25T01:27:07.592Z" itemprop="datePublished">2019-04-25</time>
@@ -71,8 +76,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/25/深拷贝和浅拷贝/">深拷贝和浅拷贝</a>
+    <h1 class="article-title" itemprop="name">
+      深拷贝和浅拷贝
     </h1>
   
 
@@ -164,56 +169,20 @@ if (src.hasOwnProperty(prop)) {
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/04/23/hello-world/" class="article-date">
-  <time datetime="2019-04-23T06:36:04.653Z" itemprop="datePublished">2019-04-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/23/hello-world/">Hello World</a>
-    </h1>
+    <a href="/2019/04/23/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wojiaho.github.io/2019/04/23/hello-world/" data-id="cjuw1pjkn0000t4uehlu6q630" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
 
-
-  
-  
 </section>
         
       </div>
